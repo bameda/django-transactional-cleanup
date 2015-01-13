@@ -1,40 +1,44 @@
-# django-cleanup
+# django-transactional-cleanup
 
-django-cleanup automatically deletes old file for FileField, ImageField and subclasses,
-and it also deletes files on models instance deletion.
+django-transactional-cleanup automatically deletes old file for FileField,
+ImageField and subclasses, and it also deletes files on models instance
+deletion.
 
-**Warning! If you use transactions you may lose you files if transaction will rollback. 
-If you are concerned about it you need other solution for old file deletion in your project.**
-
-Most django projects I've seen don't use transactions and this app is designed for such projects.
+**Warning**: It depends on django-transaction-hooks app and you need to
+configure your database backend to use a django-transactional-hooks backend or
+any that use the django-transactional-hooks backend mixin. See the
+documentation here: https://django-transaction-hooks.readthedocs.org/ .
 
 ## How does it work?
 
-django-cleanup connects pre_save and post_delete signals to special functions(these functions 
-delete old files) for each model which app is listed in INSTALLED_APPS above than 'django_cleanup'.
+django-transactional-cleanup connects pre_save and post_delete signals to
+special functions(these functions delete old files) for each model which app is
+listed in INSTALLED_APPS above than 'django_transactional_cleanup'.
 
 ## Installation
     
-    pip install django-cleanup
+    pip install django-transactional-cleanup
 
 
 ## Configuration
 
-Add django_cleanup to settings.py
+Add django_transactional_cleanup to settings.py
 
     INSTALLED_APPS = (
         ...
-        'django_cleanup', # should go after your apps
+        'django_transactional_cleanup', # should go after your apps
     )
 
-**django_cleanup** should be placed after all your apps. (At least after those apps which need to remove files.)
+**django_transactional_cleanup** should be placed after all your apps. (At
+least after those apps which need to remove files.)
 
 
 ## License
 
-django-cleanup is free software under terms of the MIT License.
+django-transactional-cleanup is free software under terms of the MIT License.
 
-Copyright (C) 2012 by Ilya Shalyapin, ishalyapin@gmail.com
+Copyright (C) 2012 by Ilya Shalyapin, ishalyapin@gmail.com  
+Copyright (C) 2015 by Jesús Espino, jesus.espino@kaleidos.net
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
