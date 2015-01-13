@@ -2,7 +2,7 @@
 
 django-transactional-cleanup automatically deletes old file for FileField,
 ImageField and subclasses, and it also deletes files on models instance
-deletion.
+deletion. This app is based on django-cleanup.
 
 **Warning**: It depends on django-transaction-hooks app and you need to
 configure your database backend to use a django-transactional-hooks backend or
