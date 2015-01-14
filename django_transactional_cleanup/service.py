@@ -1,6 +1,7 @@
 import logging
 
 from django.db import models, connection
+from django.db.utils import DEFAULT_DB_ALIAS, ConnectionHandler
 from django.db.models.signals import pre_save, post_delete
 
 from transaction_hooks.mixin import TransactionHooksDatabaseWrapperMixin
@@ -63,7 +64,9 @@ def remove_files_on_delete(sender, instance, **kwargs):
 
 
 def connect_signals():
-    if isinstance(connection, TransactionHooksDatabaseWrapperMixin):
+    connections = ConnectionHandler()
+    backend = connections[DEFAULT_DB_ALIAS]
+    if isinstance(backend, TransactionHooksDatabaseWrapperMixin):
         for model in _find_models_with_filefield():
             pre_save.connect(remove_files_on_change, sender=model)
             post_delete.connect(remove_files_on_delete, sender=model)
