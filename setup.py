@@ -19,7 +19,7 @@ setup(
     requires = ['python (>= 2.7)', 'django (>= 1.6.1)'],
     install_requires = ['django-transaction-hooks >= 0.2'],
     description  = 'Deletes old files on transaction commit.',
-    long_description = open('README.markdown').read(),
+    long_description = open('README.markdown', 'r', encoding='utf8').read(),
     author       = 'Jesús Espino',
     author_email = 'jesus.espino@kaleidos.net',
     url          = 'https://github.com/jespino/django-transactional-cleanup',
