@@ -56,3 +56,29 @@ def test_remove_files_on_delete():
     with patch('django_transactional_cleanup.service._delete_file') as mock:
         service.remove_files_on_delete(TestModel1, test_obj)
         assert mock.called
+
+
+def test_custom_pre_delete_signals():
+    test_obj = TestModel1()
+    test_obj.test_file = Mock()
+    test_obj.test_file.name = "test_filename"
+
+    test_obj.test_file.storage = Mock()
+    test_obj.test_file.storage.exists.return_value = True
+
+    with patch('django_transactional_cleanup.signals.cleanup_pre_delete.send') as mock:
+        service.remove_files_on_delete(TestModel1, test_obj)
+        assert mock.called
+
+
+def test_custom_post_delete_signals():
+    test_obj = TestModel1()
+    test_obj.test_file = Mock()
+    test_obj.test_file.name = "test_filename"
+
+    test_obj.test_file.storage = Mock()
+    test_obj.test_file.storage.exists.return_value = True
+
+    with patch('django_transactional_cleanup.signals.cleanup_post_delete.send') as mock:
+        service.remove_files_on_delete(TestModel1, test_obj)
+        assert mock.called
