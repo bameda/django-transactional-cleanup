@@ -6,6 +6,8 @@ from django.db.models.signals import pre_save, post_delete
 
 from transaction_hooks.mixin import TransactionHooksDatabaseWrapperMixin
 
+from .signals import cleanup_pre_delete, cleanup_post_delete
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,7 +24,9 @@ def _find_models_with_filefield():
 def _delete_file(file_obj):
     def delete_from_storage():
         try:
+            cleanup_pre_delete.send(sender=None, file=file_obj)
             storage.delete(file_obj.name)
+            cleanup_post_delete.send(sender=None, file=file_obj)
         except Exception:
             logger.exception("Unexpected exception while attempting to delete old file '%s'" % file_obj.name)
 

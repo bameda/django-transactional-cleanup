@@ -13,7 +13,7 @@ from setuptools import setup, find_packages
 
 setup(
     name     = 'django-transactional-cleanup',
-    version  = '0.1.14',
+    version  = '0.1.15',
     packages = ['django_transactional_cleanup',],
     include_package_data=True,
     requires = ['python (>= 2.7)', 'django (>= 1.6.1)'],
