@@ -4,6 +4,13 @@ from django.db import models, connection
 from django.db.utils import DEFAULT_DB_ALIAS, ConnectionHandler
 from django.db.models.signals import pre_save, post_delete
 
+try:
+    from django.apps import apps
+    get_models = apps.get_models
+except ImportError:
+    # Django < 1.9
+    from django.db.models import get_models
+
 from transaction_hooks.mixin import TransactionHooksDatabaseWrapperMixin
 
 from .signals import cleanup_pre_delete, cleanup_post_delete
@@ -13,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 def _find_models_with_filefield():
     result = []
-    for model in models.get_models():
+    for model in get_models():
         for field in model._meta.fields:
             if isinstance(field, models.FileField):
                 result.append(model)
